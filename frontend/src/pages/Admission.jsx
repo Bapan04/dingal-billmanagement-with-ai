@@ -101,7 +101,7 @@ const Admission = () => {
           {lastPaymentId && (
             <button 
               type="button"
-              onClick={() => window.open(`\${import.meta.env.VITE_API_URL}/api/payments/receipt/${lastPaymentId}?token=${token}`, '_blank')}
+              onClick={() => window.open(`${import.meta.env.VITE_API_URL}/api/payments/receipt/${lastPaymentId}?token=${token}`, '_blank')}
               className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-md shadow-sm transition-colors"
             >
               Download Bill Receipt

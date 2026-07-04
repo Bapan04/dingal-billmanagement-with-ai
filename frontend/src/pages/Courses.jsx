@@ -46,7 +46,7 @@ const Courses = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this course?')) return;
     try {
-      await axios.delete(`\${import.meta.env.VITE_API_URL}/api/courses/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/courses/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchCourses();

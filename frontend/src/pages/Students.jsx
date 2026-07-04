@@ -34,7 +34,7 @@ const Students = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this student and all their billing data?')) return;
     try {
-      await axios.delete(`\${import.meta.env.VITE_API_URL}/api/students/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/students/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStudents(students.filter(s => s.id !== id));
