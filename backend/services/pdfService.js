@@ -1,6 +1,7 @@
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 function numberToWords(num) {
   const a = ['','One ','Two ','Three ','Four ', 'Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
@@ -41,7 +42,10 @@ export const generateReceiptPDF = async (paymentData, studentData, customStream 
 
       // --- 1. Header Section ---
       // Try to embed the provided logo image, if available
-      const logoPath = path.join(process.cwd(), 'assets', 'logo.png');
+      const currentFilePath = fileURLToPath(import.meta.url);
+      const currentDirPath = path.dirname(currentFilePath);
+      const logoPath = path.join(currentDirPath, '..', 'assets', 'logo.png');
+      
       if (fs.existsSync(logoPath)) {
         // Embed image scaled down to act as a logo
         doc.image(logoPath, 40, 35, { width: 75 });
