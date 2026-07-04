@@ -41,7 +41,7 @@ export const generateReceiptPDF = async (paymentData, studentData, customStream 
 
       // --- 1. Header Section ---
       // Try to embed the provided logo image, if available
-      const logoPath = path.resolve(process.cwd(), '..', 'frontend', 'src', 'assets', 'logo.png');
+      const logoPath = path.join(process.cwd(), 'assets', 'logo.png');
       if (fs.existsSync(logoPath)) {
         // Embed image scaled down to act as a logo
         doc.image(logoPath, 40, 35, { width: 75 });
