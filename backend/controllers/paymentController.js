@@ -70,19 +70,23 @@ export const downloadReceipt = async (req, res) => {
   try {
     const { data: payment, error } = await supabase
       .from('payments')
-      .select('receipt_url')
+      .select('*, students(*)')
       .eq('id', id)
       .single();
       
-    if (error || !payment || !payment.receipt_url) {
+    if (error || !payment) {
       return res.status(404).json({ message: 'Receipt not found' });
     }
     
     if (preview === 'true') {
-      res.sendFile(payment.receipt_url);
+      res.setHeader('Content-Type', 'application/pdf');
     } else {
-      res.download(payment.receipt_url);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=receipt_${payment.id}.pdf`);
     }
+
+    await generateReceiptPDF(payment, payment.students, res);
+
   } catch (err) {
     res.status(500).json({ message: 'Error downloading receipt' });
   }

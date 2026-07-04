@@ -16,19 +16,27 @@ function numberToWords(num) {
   return str === '' ? 'Zero Only' : str + ' Only';
 }
 
-export const generateReceiptPDF = async (paymentData, studentData) => {
+import os from 'os';
+
+export const generateReceiptPDF = async (paymentData, studentData, customStream = null) => {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({ margin: 40, size: 'A4' });
       
-      const receiptsDir = path.join(process.cwd(), 'receipts');
-      if (!fs.existsSync(receiptsDir)) {
-        fs.mkdirSync(receiptsDir);
+      let writeStream = customStream;
+      let filePath = null;
+
+      if (!customStream) {
+        const receiptsDir = path.join(os.tmpdir(), 'receipts');
+        if (!fs.existsSync(receiptsDir)) {
+          fs.mkdirSync(receiptsDir, { recursive: true });
+        }
+
+        const fileName = `receipt_${paymentData.id}.pdf`;
+        filePath = path.join(receiptsDir, fileName);
+        writeStream = fs.createWriteStream(filePath);
       }
 
-      const fileName = `receipt_${paymentData.id}.pdf`;
-      const filePath = path.join(receiptsDir, fileName);
-      const writeStream = fs.createWriteStream(filePath);
       doc.pipe(writeStream);
 
       // --- 1. Header Section ---

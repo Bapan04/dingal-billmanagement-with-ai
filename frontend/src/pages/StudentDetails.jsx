@@ -165,7 +165,6 @@ const StudentDetails = () => {
                         </span>
                       </p>
                     </div>
-                    {payment.receipt_url && (
                       <div className="flex space-x-2">
                         <button onClick={() => previewReceipt(payment.id)} className="flex items-center px-3 py-1.5 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">
                           <Eye className="w-3 h-3 mr-1" /> Preview
@@ -174,7 +173,6 @@ const StudentDetails = () => {
                           <Download className="w-3 h-3 mr-1" /> Bill
                         </button>
                       </div>
-                    )}
                   </li>
                 ))
               )}
