@@ -16,7 +16,7 @@ const Courses = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/courses', {
+      const res = await axios.get(import.meta.env.VITE_API_URL + '/api/courses', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCourses(res.data);
@@ -30,7 +30,7 @@ const Courses = () => {
     setLoading(true);
     setMessage('');
     try {
-      await axios.post('http://localhost:5000/api/courses', formData, {
+      await axios.post(import.meta.env.VITE_API_URL + '/api/courses', formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Course created successfully!');
@@ -46,7 +46,7 @@ const Courses = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this course?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/courses/${id}`, {
+      await axios.delete(`\${import.meta.env.VITE_API_URL}/api/courses/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchCourses();

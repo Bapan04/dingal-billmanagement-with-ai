@@ -16,7 +16,7 @@ const StudentDetails = () => {
 
   const fetchStudentData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/students/${id}`, {
+      const res = await axios.get(`\${import.meta.env.VITE_API_URL}/api/students/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(res.data);
@@ -30,21 +30,21 @@ const StudentDetails = () => {
   const downloadReceipt = async (paymentId) => {
     try {
       // Create an invisible anchor to download the file directly from backend URL
-      window.open(`http://localhost:5000/api/payments/receipt/${paymentId}?token=${token}`, '_blank');
+      window.open(`\${import.meta.env.VITE_API_URL}/api/payments/receipt/${paymentId}?token=${token}`, '_blank');
     } catch (err) {
       alert("Error downloading receipt");
     }
   };
 
   const previewReceipt = (paymentId) => {
-    window.open(`http://localhost:5000/api/payments/receipt/${paymentId}?token=${token}&preview=true`, '_blank');
+    window.open(`\${import.meta.env.VITE_API_URL}/api/payments/receipt/${paymentId}?token=${token}&preview=true`, '_blank');
   };
 
   const processInstallment = async (emiPlanId, amount) => {
     if (!window.confirm(`Process payment of Rs. ${amount} for this installment?`)) return;
     
     try {
-      await axios.post('http://localhost:5000/api/payments', {
+      await axios.post(import.meta.env.VITE_API_URL + '/api/payments', {
         student_id: id,
         amount,
         payment_method: 'INSTALLMENT',

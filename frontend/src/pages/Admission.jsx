@@ -25,7 +25,7 @@ const Admission = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/courses', {
+        const response = await axios.get(import.meta.env.VITE_API_URL + '/api/courses', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCourses(response.data);
@@ -72,7 +72,7 @@ const Admission = () => {
     setLastPaymentId(null);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/students/admit', formData, {
+      const res = await axios.post(import.meta.env.VITE_API_URL + '/api/students/admit', formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess('Student successfully admitted and billed!');
@@ -101,7 +101,7 @@ const Admission = () => {
           {lastPaymentId && (
             <button 
               type="button"
-              onClick={() => window.open(`http://localhost:5000/api/payments/receipt/${lastPaymentId}?token=${token}`, '_blank')}
+              onClick={() => window.open(`\${import.meta.env.VITE_API_URL}/api/payments/receipt/${lastPaymentId}?token=${token}`, '_blank')}
               className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-md shadow-sm transition-colors"
             >
               Download Bill Receipt

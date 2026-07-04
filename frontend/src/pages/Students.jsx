@@ -17,8 +17,8 @@ const Students = () => {
     const fetchData = async () => {
       try {
         const [studentRes, courseRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/students', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://localhost:5000/api/courses', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get(import.meta.env.VITE_API_URL + '/api/students', { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get(import.meta.env.VITE_API_URL + '/api/courses', { headers: { Authorization: `Bearer ${token}` } })
         ]);
         setStudents(studentRes.data);
         setCourses(courseRes.data);
@@ -34,7 +34,7 @@ const Students = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this student and all their billing data?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/students/${id}`, {
+      await axios.delete(`\${import.meta.env.VITE_API_URL}/api/students/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStudents(students.filter(s => s.id !== id));
