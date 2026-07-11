@@ -27,9 +27,7 @@ graph TD
 Access is restricted to authorized personnel. Users are authenticated via custom JWTs linked to their roles: `CORE_ADMIN`, `ADMIN`, or `TEACHER`.
 LOGIN CREDENTIALS
 
-
-ID:-admin@dingal.com
-
+Email Address:-admin@dingal.com
 
 Password:-admin123
 
