@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const rawUrl = import.meta.env.VITE_API_URL || '';
+let rawUrl = import.meta.env.VITE_API_URL || '';
+
+// Fallback to relative path if VITE_API_URL is missing or set to old non-existent backend URL
+if (!rawUrl || rawUrl.includes('dingal-billmanagement-with-ai-1.vercel.app')) {
+  rawUrl = '';
+}
+
 const cleanUrl = rawUrl.replace(/\/$/, '');
 
 const API = axios.create({
