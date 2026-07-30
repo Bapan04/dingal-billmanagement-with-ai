@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import authRoutes from './routes/authRoutes.js';
+import { login } from './controllers/authController.js';
 import courseRoutes from './routes/courseRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
@@ -37,6 +38,14 @@ app.get('/api/health', (req, res) => {
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
+app.get('/', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Dingal API Server is running' });
+});
+
+// Explicit login routes to guarantee matching regardless of Vercel path rewriting
+app.post('/api/auth/login', login);
+app.post('/auth/login', login);
+app.post('/login', login);
 
 // Routes - mounted on /api/*, /* and direct paths to guarantee matching on Vercel
 app.use('/api/auth', authRoutes);
