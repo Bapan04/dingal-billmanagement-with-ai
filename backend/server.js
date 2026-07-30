@@ -38,7 +38,7 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
-// Routes - mounted on both /api/* and /* to support Vercel rewriting
+// Routes - mounted on /api/*, /* and direct paths to guarantee matching on Vercel
 app.use('/api/auth', authRoutes);
 app.use('/auth', authRoutes);
 
@@ -57,10 +57,15 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/ai', aiRoutes);
 
+// Catch-all 404 handler returning JSON with CORS headers
+app.use((req, res) => {
+  res.status(404).json({ status: 'error', message: `Route not found: ${req.method} ${req.url}` });
+});
+
 // Global Error Handler to prevent unhandled crashes on Vercel
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
-  res.status(500).json({ message: 'Internal server error', error: err.message });
+  res.status(500).json({ status: 'error', message: 'Internal server error', error: err.message });
 });
 
 const PORT = process.env.PORT || 5000;
