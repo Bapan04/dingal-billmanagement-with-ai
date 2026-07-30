@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 // or query the `users` table directly for a simple custom implementation.
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body || {};
   try {
     // -------------------------------------------------------------
     // TEMPORARY BYPASS: Hardcoded admin account for easy testing
