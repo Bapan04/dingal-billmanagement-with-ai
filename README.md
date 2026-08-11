@@ -155,3 +155,4 @@ npm run dev
 The frontend will run on [http://localhost:5173](http://localhost:5173) and the backend will run on [http://localhost:5000](http://localhost:5000).
 
 <!-- deploy: root-directory fix verification 2026-08-11 -->
+<!-- deploy: env vars added 2026-08-11 -->
