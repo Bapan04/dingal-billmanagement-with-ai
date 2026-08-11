@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const Courses = () => {
@@ -16,9 +16,7 @@ const Courses = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await axios.get(import.meta.env.VITE_API_URL + '/api/courses', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await API.get('/api/courses');
       setCourses(res.data);
     } catch (err) {
       console.error(err);
@@ -30,9 +28,7 @@ const Courses = () => {
     setLoading(true);
     setMessage('');
     try {
-      await axios.post(import.meta.env.VITE_API_URL + '/api/courses', formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await API.post('/api/courses', formData);
       setMessage('Course created successfully!');
       setFormData({ name: '', fee: '', duration: '' });
       fetchCourses();
@@ -46,9 +42,7 @@ const Courses = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this course?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/courses/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await API.delete(`/api/courses/${id}`);
       fetchCourses();
     } catch (err) {
       alert('Error deleting course. It might be assigned to students.');

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Users, DollarSign, BookOpen, Clock } from 'lucide-react';
 
@@ -16,9 +16,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_API_URL + '/api/dashboard/stats', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await API.get('/api/dashboard/stats');
         setStats(response.data);
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
@@ -55,7 +53,7 @@ const Dashboard = () => {
           </div>
           <div>
             <p className="text-sm font-medium text-gray-500 mb-1">Total Revenue</p>
-            <h3 className="text-3xl font-bold text-gray-900">Rs. {stats.totalRevenue.toLocaleString()}</h3>
+            <h3 className="text-3xl font-bold text-gray-900">Rs. {(stats.totalRevenue ?? 0).toLocaleString()}</h3>
           </div>
         </div>
 
@@ -87,14 +85,14 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {stats.recentAdmissions.length === 0 ? (
+              {(stats.recentAdmissions ?? []).length === 0 ? (
                 <tr>
                   <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
                     No recent admissions found.
                   </td>
                 </tr>
               ) : (
-                stats.recentAdmissions.map((student) => (
+                (stats.recentAdmissions ?? []).map((student) => (
                   <tr key={student.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">{student.name}</td>
                     <td className="px-6 py-4 text-sm text-gray-500">{student.email}</td>

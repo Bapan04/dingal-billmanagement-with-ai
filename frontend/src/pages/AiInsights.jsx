@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { Sparkles, Activity, PieChart, TrendingUp, List } from 'lucide-react';
 
 const AiInsights = () => {
@@ -11,12 +11,7 @@ const AiInsights = () => {
         setLoading(true);
         setActiveTab(title);
         try {
-            const token = localStorage.getItem('token');
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/ai/${endpoint}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const res = await API.get(`/api/ai/${endpoint}`);
             setInsightData(res.data.insights);
         } catch (error) {
             console.error(error);

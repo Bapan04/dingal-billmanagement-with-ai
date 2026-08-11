@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const Students = () => {
@@ -17,8 +17,8 @@ const Students = () => {
     const fetchData = async () => {
       try {
         const [studentRes, courseRes] = await Promise.all([
-          axios.get(import.meta.env.VITE_API_URL + '/api/students', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get(import.meta.env.VITE_API_URL + '/api/courses', { headers: { Authorization: `Bearer ${token}` } })
+          API.get('/api/students'),
+          API.get('/api/courses')
         ]);
         setStudents(studentRes.data);
         setCourses(courseRes.data);
@@ -34,9 +34,7 @@ const Students = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this student and all their billing data?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/students/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await API.delete(`/api/students/${id}`);
       setStudents(students.filter(s => s.id !== id));
     } catch (err) {
       alert(err.response?.data?.message || 'Error deleting student');

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { ShieldCheck } from 'lucide-react';
 
@@ -21,9 +21,7 @@ const Admins = () => {
     setError('');
 
     try {
-      await axios.post(import.meta.env.VITE_API_URL + '/api/auth/register', formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await API.post('/api/auth/register', formData);
       setMessage('Admin user created successfully!');
       setFormData({ name: '', email: '', password: '', role: 'ADMIN' });
     } catch (err) {

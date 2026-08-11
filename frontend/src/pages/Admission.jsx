@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const Admission = () => {
@@ -25,9 +25,7 @@ const Admission = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_API_URL + '/api/courses', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await API.get('/api/courses');
         setCourses(response.data);
       } catch (err) {
         console.error('Error fetching courses', err);
@@ -72,9 +70,7 @@ const Admission = () => {
     setLastPaymentId(null);
 
     try {
-      const res = await axios.post(import.meta.env.VITE_API_URL + '/api/students/admit', formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await API.post('/api/students/admit', formData);
       setSuccess('Student successfully admitted and billed!');
       if (res.data.payment_id) setLastPaymentId(res.data.payment_id);
       
@@ -101,7 +97,7 @@ const Admission = () => {
           {lastPaymentId && (
             <button 
               type="button"
-              onClick={() => window.open(`${import.meta.env.VITE_API_URL}/api/payments/receipt/${lastPaymentId}?token=${token}`, '_blank')}
+              onClick={() => window.open(`/api/payments/receipt/${lastPaymentId}?token=${token}`, '_blank')}
               className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-md shadow-sm transition-colors"
             >
               Download Bill Receipt

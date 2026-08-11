@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { User, FileText, ArrowLeft, Download, CheckCircle, Clock, Eye } from 'lucide-react';
 
@@ -16,9 +16,7 @@ const StudentDetails = () => {
 
   const fetchStudentData = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/students/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await API.get(`/api/students/${id}`);
       setData(res.data);
     } catch (err) {
       console.error(err);
@@ -30,27 +28,25 @@ const StudentDetails = () => {
   const downloadReceipt = async (paymentId) => {
     try {
       // Create an invisible anchor to download the file directly from backend URL
-      window.open(`${import.meta.env.VITE_API_URL}/api/payments/receipt/${paymentId}?token=${token}`, '_blank');
+      window.open(`/api/payments/receipt/${paymentId}?token=${token}`, '_blank');
     } catch (err) {
       alert("Error downloading receipt");
     }
   };
 
   const previewReceipt = (paymentId) => {
-    window.open(`${import.meta.env.VITE_API_URL}/api/payments/receipt/${paymentId}?token=${token}&preview=true`, '_blank');
+    window.open(`/api/payments/receipt/${paymentId}?token=${token}&preview=true`, '_blank');
   };
 
   const processInstallment = async (emiPlanId, amount) => {
     if (!window.confirm(`Process payment of Rs. ${amount} for this installment?`)) return;
     
     try {
-      await axios.post(import.meta.env.VITE_API_URL + '/api/payments', {
+      await API.post('/api/payments', {
         student_id: id,
         amount,
         payment_method: 'INSTALLMENT',
         emi_plan_id: emiPlanId
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
       });
       alert('Payment successful! Receipt generated.');
       fetchStudentData();
