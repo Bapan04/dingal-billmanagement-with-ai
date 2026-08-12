@@ -33,7 +33,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Server is running' });
+  res.status(200).json({
+    status: 'ok',
+    message: 'Server is running',
+    env: {
+      SUPABASE_URL: !!process.env.SUPABASE_URL,
+      SUPABASE_KEY: !!process.env.SUPABASE_KEY,
+      JWT_SECRET: !!process.env.JWT_SECRET,
+      GEMINI_API_KEY: !!process.env.GEMINI_API_KEY,
+      SMTP_HOST: !!process.env.SMTP_HOST
+    },
+    relatedEnvNames: Object.keys(process.env).filter((k) => /SUPA|JWT|GEMINI|SMTP/i.test(k))
+  });
 });
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
